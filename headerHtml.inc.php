@@ -3,15 +3,17 @@ if (!isset($areUpdating)) require_once 'headerDB.inc.php';
 
 if ($_SESSION['version']!==_GTD_VERSION && !isset($areUpdating) ) {
     $testver=query('getgtdphpversion');
-    if ($testver && _GTD_VERSION === array_pop(array_pop($testver)) ) {
-        $_SESSION['version']=_GTD_VERSION;
+    $tmp=array_pop($testver);
+    $tmp2=array_pop($tmp);
+    if (_GTD_VERSION === $tmp2 ) {
+      $_SESSION['version']=_GTD_VERSION;
     } else {
-        $msg= ($testver)
-                ? "<p class='warning'>Your version of the database needs upgrading before we can continue.</p>"
-                : "<p class='warning'>No gtd-php installation found: please check the database prefix in config.inc.php, and then install.</p>";
-        $_SESSION['message']=array($msg); // remove warning about version not being found
-        nextScreen('install.php');
-        die;
+      $msg= (empty($testver))
+              ? "<p class='warning'>Your version of the database needs upgrading before we can continue.</p>"
+              : "<p class='warning'>No gtd-php installation found: please check the database prefix in config.inc.php, and then install.</p>";
+      $_SESSION['message']=array($msg); // remove warning about version not being found
+      nextScreen('install.php');
+      die;
     }
 }
 

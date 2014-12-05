@@ -24,7 +24,9 @@ function show1($item) {  // recursive function to list an item, and to kick off 
         $spanclass=" class='someday'";
     } else {
         $liclass='';
-        $spanclass = ($values['type']==='a' && $values['nextaction']==='n')
+        $spanclass = (   ($values['type']==='a' && $values['nextaction']==='n') 
+                      || ($values['type']==='w' && $values['nextaction']==='n')
+                      || ($values['type']==='r') )
                       ? " class='treenotNA'" : '';
     }
     if (array_key_exists($item,$baditems)) {

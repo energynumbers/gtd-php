@@ -1,0 +1,33 @@
+@import url(../redblue/style_screen.css);
+.weeklytable>tbody>tr:hover, .datatable tr:hover td, .datatable tr:hover td.noparent, .datatable tbody tr:hover,tbody tr:hover td.col-description, .datatable tbody tr:hover td.maincolumn, td:hover
+{
+	background: #ddd;
+	color:black;
+}
+#menudiv li li, #menudiv li li a {
+    color:white;
+}
+tbody td,#menudiv {
+    font-family:'tahoma','optima',sans-serif;
+    font-size:10pt;
+}
+#searcher {
+	background-Color:white;
+	border: 6px ridge #000B86;
+}
+#donebox {
+    background-color:#960200;
+}
+#donebox a,#donebox a:link, #donebox a:visited {
+    color:#ddd;
+}
+#donebox a:hover {
+    color:white;
+    border:1px solid #960200;
+}
+#freezer {
+	background-color:#000B86;
+}
+#menudiv li a, #menudiv li ul, #menudiv li:hover ul, #menudiv li.over ul {
+    z-index: 99999;
+}

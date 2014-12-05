@@ -35,7 +35,7 @@ if (!empty($_SESSION['debug']['notice']))
 */
 switch ($config['dbtype']) {
     case "mysql":
-		require_once 'mysql.inc.php';
+		require_once 'mysqli.inc.php';
         break;
     /*
        only mysql is supported, at present! - all of the others are here as placeholders for later development
@@ -59,7 +59,7 @@ switch ($config['dbtype']) {
         die("Database type not configured.  Please edit the config.inc.php file.");
 }
 //connect to database
-$connection = connectdb($config);
+connectdb($config);
 unset($config['pass']); // don't let the database password leak out
 require_once 'gtdfuncs.inc.php';
 global $onInstall;

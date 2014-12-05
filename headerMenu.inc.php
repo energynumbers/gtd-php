@@ -141,7 +141,7 @@ foreach ($eventhandlers as $addonid=>$thisaddon) {
    ----------------------------------------------
         finally, echo out the menus
 */
-gtd_handleEvent(_GTD_ON_TITLE,$pagename);
+gtd_handleEvent(_GTD_ON_TITLE,$title);
 ?>
 <div id='container'>
 <div id="header">

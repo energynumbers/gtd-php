@@ -569,7 +569,7 @@ function nextPage() { // set up the forwarding to the next page
             break;
             
         default        :
-            $nextURL = (is_array($tst)) ? $tst[0] : $tst;
+            $nextURL=$tst;
             break;
     }
     log_value('referrer',$updateGlobals['referrer']);

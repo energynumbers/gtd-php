@@ -1,6 +1,6 @@
 <?php
 session_start();
-global $pagename,$starttime,$totalquerytime;
+global $pagename,$starttime,$totalquerytime,$connection;
 list($usec, $sec) = explode(" ", microtime());
 $starttime=(float)$usec + (float)$sec;
 $totalquerytime=0;

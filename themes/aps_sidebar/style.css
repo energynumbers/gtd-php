@@ -1,0 +1,68 @@
+@import url(../menu_sidebar/style.css);
+
+table.mainReport tr.col-fulloutcome td {
+    font-size: 1.2em;
+    font-weight:bold;
+}
+
+h1,h2,a,a:link,a:visited,a:hover,.fakelink  {
+	color: #000B86;
+}
+a.nextactionlink {
+	color: #F80;
+}
+body,table td, table th, table tbody td, select {
+    font-family: 'CG Omega','eurostile','tahoma','optima',sans-serif;
+    font-size:10px;
+}
+h1,h2,h3,h4 {
+    font-family: 'HelveticaNeue','Helvetica','tahoma','optima',sans-serif;
+}
+body,table td, table th, table tbody td, select {
+    font-size: 13px;
+}
+td a, td a:link, td a.nextactionlink, td a:visited {
+    font-weight:normal;
+}
+.datatable td {
+    margin: 0;
+    padding: 1px 2px;
+    border-bottom: #ccc solid 1px;
+}
+tbody {
+    border: #960200 solid 1px;
+}
+tbody td {
+    margin: 0;
+    padding: 1px 2px;
+}
+
+.datatable tbody tr td.overdue {
+	font-weight: bold;
+	color: #F00;
+}
+.datatable tbody td {
+    padding:1px;
+}
+.datatable tbody tr td.due {
+	color:green;
+	font-weight:bold;
+}
+h3 {
+	color: #8888DA;
+}
+h2 a, h3 a {
+    border-bottom:1px dotted #000B86;
+}
+a.nextactionlink, tbody tr td a.nextactionlink {
+    color: #b00;
+}
+input[type='text'],textarea,select {
+    color: black;
+}
+#main {
+    width:88%;
+}
+#menudiv {
+    width:11%;
+}

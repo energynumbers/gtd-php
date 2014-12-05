@@ -1,0 +1,9 @@
+#require group admin
+<Files ~ "\.(inc\.php)$">
+  order allow,deny
+  deny from all
+</Files>
+#php_value mbstring.http_input UTF-8,ASCII
+#php_value mbstring.detect_order UTF-8,ASCII
+#php_value mbstring.func_overload 6
+#SecFilterEngine Off

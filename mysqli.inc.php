@@ -5,33 +5,30 @@
 
 */
 function connectdb($config) {
-
-    $connection = mysql_connect($config['host'], $config['user'], $config['pass'])
-        or die ("Unable to connect to MySQL server: check your host, user and pass settings in config.inc.php!");
-        
-    mysql_select_db($config['db'])
-        or die ("Unable to select database '{$config['db']}' - check your db setting in config.inc.php!");
-        
+	global $connection;
+    $connection = mysqli_connect($config['host'], $config['user'], $config['pass'],$config['db'])
+        or die ("Unable to connect to MySQL server: check your host, user, pass and db settings in config.inc.php!");
+                
     if (!empty($config['charset'])) {
         $charset=preg_replace('/\W/u','',$config['charset']);
         rawQuery('SET NAMES '.$charset);
     }
-
-    return $connection;
 }
 /*
   ===============================================================
 */
 function getDBVersion() {
-    return mysql_get_server_info();
+	global $connection;
+    return mysqli_get_server_info($connection);
 }
 /*
   ===============================================================
 */
 function getDBtables($db) {
+	global $connection;
     $tablelist=array();
-    $tables=mysql_list_tables($db);
-	while ($tbl = mysql_fetch_row($tables))
+    $tables=mysqli_list_tables($connection, $db);
+	while ($tbl = mysqli_fetch_row($tables))
 	   array_push($tablelist,$tbl[0]);
     return $tablelist;
 }
@@ -39,18 +36,19 @@ function getDBtables($db) {
   ===============================================================
 */
 function doQuery($query,$label=NULL) {
-    // parse result into multitdimensional array $result[row#][field name] = field value
+ 	global $connection;
+   // parse result into multitdimensional array $result[row#][field name] = field value
     $reply = rawQuery($query);
     if ($reply===false) {                       // failed query - return FALSE
         $result=false;
     } elseif ($reply===true) {                  // query was not a SELECT OR SHOW, so return number of rows affected
-        $result=@mysql_affected_rows();
-    } else if (@mysql_num_rows($reply)===0) {   // empty SELECT/SHOW - return zero
+        $result=@mysqli_affected_rows($connection);
+    } else if ($reply->num_rows === 0) {   // empty SELECT/SHOW - return zero
         $result=0;
     } else {                                    // successful SELECT/SHOW - return array of results
         $result=array();
-        while ($mysql_result = mysql_fetch_assoc($reply))
-            $result[]=$mysql_result;
+        while ($mysqli_result = mysqli_fetch_assoc($reply))
+            $result[]=$mysqli_result;
     }
 
     /* get last autoincrement insert id:
@@ -58,11 +56,11 @@ function doQuery($query,$label=NULL) {
         not updated when explicit value given for autoincrement field
         (MySQL "feature")
     */
-    $GLOBALS['lastinsertid'] = mysql_insert_id();
+    $GLOBALS['lastinsertid'] = mysqli_insert_id($connection);
 
-    $error = mysql_errno();
+    $error = mysqli_errno($connection);
     if ($error) $_SESSION['message'][]=
-                "Error $error in query '$label': '".mysql_error()."'";
+                "Error $error in query '$label': '".mysqli_error($connection)."'";
                 
     return $result;
 }
@@ -70,10 +68,11 @@ function doQuery($query,$label=NULL) {
   ===============================================================
 */
 function rawQuery($query) {
-    global $totalquerytime;
+    global $totalquerytime, $connection;
+;
     list($busec, $bsec) = explode(' ',microtime());
 
-    $reply = mysql_query($query);
+    $reply = mysqli_query($connection, $query);
 
     list($ausec, $asec) = explode(' ',microtime());
     $totalquerytime+= (float)$ausec + (float)$asec - (float)$busec - (float)$bsec;
@@ -84,6 +83,7 @@ function rawQuery($query) {
   ===============================================================
 */
 function safeIntoDB($value,$key=NULL) {
+	global $connection;
 	if (is_array($value)) {
         // don't clean arrays - clean individual strings/values by calling self recursively
 		foreach ($value as $key=>$string) $value[$key] = safeIntoDB($string,$key);
@@ -96,9 +96,9 @@ function safeIntoDB($value,$key=NULL) {
 			if ( get_magic_quotes_gpc() && !empty($value) && is_string($value) )
 				$value = stripslashes($value);
 			if(version_compare(phpversion(),"4.3.0",'<'))
-				$value = mysql_escape_string($value);
+				$value = mysqli_escape_string($connection, $value);
 			else
-				$value = mysql_real_escape_string($value);
+				$value = mysqli_real_escape_string($connection, $value);
 		} else { return $value;}
 		return $value;
 	}
@@ -107,6 +107,7 @@ function safeIntoDB($value,$key=NULL) {
    ======================================================================================
 */
 function optimise_tables($prefix) {
+	global $connection;
     $result='';
     $tables=array('categories','context','items','itemstatus','lookup','preferences','tagmap','timeitems','version');
     foreach ($tables as $tab) {
@@ -120,17 +121,18 @@ function optimise_tables($prefix) {
    ======================================================================================
 */
 function backupData($prefix) {
+	global $connection;
     $sep="\n-- *******************************\n";
     $tables=array('categories','context','items','itemstatus','lookup','preferences','tagmap','timeitems','version');
     $dropper=$data=$creators='';
     foreach ($tables as $tab) {
         $table=$prefix.$tab;
         $data .=$sep;
-        $struc=@mysql_fetch_assoc(rawQuery("SHOW CREATE TABLE $table"));
+        $struc=@mysqli_fetch_assoc(rawQuery("SHOW CREATE TABLE $table"));
         $creators .= $struc['Create Table'].'; '.$sep;
         $dropper .= "DROP TABLE IF EXISTS `{$table}`; \n";
         $rows = rawQuery("SELECT * FROM `$table`",false);
-        while ($rec = @mysql_fetch_assoc($rows) ) {
+        while ($rec = @mysqli_fetch_assoc($rows) ) {
             $thisdata='';
             foreach ($rec as $key => $value)
                 $thisdata .= ( ($value===NULL)
@@ -148,17 +150,18 @@ function backupData($prefix) {
    ======================================================================================
 */
 function checkErrors($prefix) {
+	global $connection;
 
     $errors=$totals=array();
     
     $q="SELECT COUNT(*) FROM `{$prefix}items`";
-    $val=@mysql_fetch_row(rawQuery($q));
+    $val=@mysqli_fetch_row(rawQuery($q));
     if (empty($val)) return false;
     $totals['items']=(int) $val[0];
     
     $q="SELECT COUNT(*) FROM `{$prefix}itemstatus`
             WHERE `dateCompleted` IS NULL AND `nextaction`='y'";
-    $val=@mysql_fetch_row(rawQuery($q));
+    $val=@mysqli_fetch_row(rawQuery($q));
     $totals['next actions']=(int) $val[0];
     
     $q="SELECT COUNT(*) FROM `{$prefix}itemstatus`
@@ -169,32 +172,32 @@ function checkErrors($prefix) {
                 )
             OR `type`='' OR `type` IS NULL
             )";
-    $val=@mysql_fetch_row(rawQuery($q));
+    $val=@mysqli_fetch_row(rawQuery($q));
     $totals['orphans']=(int) $val[0];
 
     /* -----------------------------------------------------
             count errors
     */
     $q="SELECT COUNT(*) FROM `{$prefix}items` where `title`=NULL OR `title`=''";
-    $val=@mysql_fetch_row(rawQuery($q));
+    $val=@mysqli_fetch_row(rawQuery($q));
     $errors['missing titles']=(int) $val[0];
     
     $q="SELECT COUNT(*) FROM `{$prefix}lookup` WHERE
             `parentId` NOT IN (SELECT `itemId` FROM `{$prefix}items`)
            OR `itemId` NOT IN (SELECT `itemId` FROM `{$prefix}items`)";
-    $val=@mysql_fetch_row(rawQuery($q));
+    $val=@mysqli_fetch_row(rawQuery($q));
     $errors['redundant parent entries']=(int) $val[0];
     
     $q="SELECT COUNT(version) FROM `{$prefix}version`";
-    $val=@mysql_fetch_row(rawQuery($q));
+    $val=@mysqli_fetch_row(rawQuery($q));
     $errors['redundant version tags']=-1+(int) $val[0];
 
     $q="SELECT COUNT(`itemId`) FROM `{$prefix}itemstatus` WHERE `type` IS NULL OR `type`=''";
-    $val=@mysql_fetch_row(rawQuery($q));
+    $val=@mysqli_fetch_row(rawQuery($q));
     $errors['items with no type']=(int) $val[0];
 
     $q="SELECT COUNT(*) FROM `{$prefix}tagmap` WHERE `itemId` NOT IN (SELECT `itemId` FROM `{$prefix}itemstatus`)";
-    $val=@mysql_fetch_row(rawQuery($q));
+    $val=@mysqli_fetch_row(rawQuery($q));
     $errors['orphaned tags']=(int) $val[0];
     
     // look for items that are ancestors of themselves
@@ -212,7 +215,7 @@ function checkErrors($prefix) {
     $items1=array('itemstatus'=>'items','items'=>'itemstatus');
     foreach ($items1 as $t1=>$t2) {
         $q="SELECT COUNT(DISTINCT `itemId`) FROM `{$prefix}$t1` WHERE `itemId` NOT IN (SELECT `itemId` FROM `{$prefix}$t2`)";
-        $val=@mysql_fetch_row(rawQuery($q));
+        $val=@mysqli_fetch_row(rawQuery($q));
         $partialitems+=(int) $val[0];
     }
     $errors["Item IDs are missing from some tables "]=$partialitems;
@@ -223,6 +226,7 @@ function checkErrors($prefix) {
    ======================================================================================
 */
 function fixData($prefix) {
+	global $connection;
     foreach ( array( 'deadline','tickledate','dateCompleted','dateCreated',
                 'lastModified') as $field) {
         // change dates of "0000-00-00" to NULL
@@ -317,6 +321,7 @@ GENERAL RULES:
     "*selectbox" = get results to create a selectbox- for assignment or filter
 */
 function getsql($querylabel,$values,$sort) {
+	global $connection;
 
     $values = safeIntoDB($values);
     $prefix=$_SESSION['prefix'];
@@ -912,6 +917,7 @@ function getsql($querylabel,$values,$sort) {
 function sqlparts($part,$values) {
   $prefix=$_SESSION['prefix'];
   $values = safeIntoDB($values);
+  global $connection;
 
   switch ($part) {
 	case "activeitems":

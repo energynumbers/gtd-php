@@ -1,0 +1,12 @@
+#alertbar {
+    background-color:black;
+    position:absolute;
+    margin:0px;
+    padding:0px;
+    top:0px;
+    right:0px;
+    width:auto;
+}
+#alertbar a {
+    color:white;
+}
