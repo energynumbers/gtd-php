@@ -18,7 +18,7 @@ if (array_key_exists('addons',$_SESSION)) {
             <td><?php echo _GTDPHP_VERSION; ?></td>
         </tr>
         <tr><th>GTD-PHP database</th>
-            <td><?php echo array_pop(array_pop(query('getgtdphpversion'))); ?></td>
+            <td><?php echo query('getgtdphpversion')[0]['version']; ?></td>
         </tr>
         <tr><th>GTD-PHP theme</th>
             <td><?php echo $_SESSION['theme']; ?></td>

@@ -1040,7 +1040,8 @@ function getNextRecurrence($values,$vevent=NULL) {
     if (empty($recurlist)) {
         $nextdue=false;
     } else {
-        $nextdue=array_shift(array_keys($recurlist)); // get first key in returned array - that's the date
+        reset($recurlist);
+        $nextdue=key($recurlist); // get first key in returned array - that's the date
         // if we had an UNTIL date, compare our returned date
         // if it's later, then there are no more recurrences
         $nextdue= ($saveUntil && $saveUntil < $nextdue) ? false : date('Y-m-d',$nextdue);
