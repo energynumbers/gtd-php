@@ -163,7 +163,7 @@ function checkSaneRecurrenceInterval(aEvent) {
     }
     if (!passed) {
       // validation tests had previously failed, so add warning to error box
-      warning = warning.replace(/\n/g, "<br/>");
+      warning = warning.replace(/\n/g, "<br>");
       $("#errorMessage").append(warning);
       fieldToFocus.select().get(0).focus();
     }
@@ -1209,7 +1209,7 @@ GTD.validate=function gtd_validate(form) {
 
     // Parse required list and check each required field
     formValid=true;
-    formErrorMessage="Please correct the following:<br />";
+    formErrorMessage="Please correct the following:<br>";
     requiredList = form.required.value.split(",");
 
     // remove any previous error flags
@@ -1249,7 +1249,7 @@ GTD.validate=function gtd_validate(form) {
         if (!passed) {
             if (formValid) {thisfield.focus();}
             formValid=false;
-            formErrorMessage += itemErrorMessage + "<br />";
+            formErrorMessage += itemErrorMessage + "<br>";
             thisfield.className='formerror';
         }
     }

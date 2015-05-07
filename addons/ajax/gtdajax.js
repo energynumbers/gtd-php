@@ -30,7 +30,7 @@ function messagepopup(text,xmldata,top,left) {
     $('gtdphp result line',xmldata).
         each(function() {
             msgbox.append(sep+$(this).text());
-            sep='<br/>';
+            sep='<br>';
         });
     msgbox.animateShow();
     return msgbox;

@@ -230,9 +230,9 @@ $referrer = ( preg_match("/[^\/]+$/", $_SERVER['REQUEST_URI'] ,$matches ) ) ?
 include_once 'headerHtml.inc.php';
 ?>
 
-<link rel='stylesheet' href='<?php echo $addon['dir']; ?>tree.css' type='text/css' />
-<script type='text/javascript' src='<?php echo $addon['dir']; ?>tree.js'></script>
-<script type="text/javascript">
+<link rel='stylesheet' href='<?php echo $addon['dir']; ?>tree.css' >
+<script src='<?php echo $addon['dir']; ?>tree.js'></script>
+<script>
 $(document).ready(function treephp_ready() {
   GTD.tree.init(['<?php echo implode("','",$mainTypes); ?>']);
 });
@@ -265,7 +265,7 @@ include_once 'header.inc.php';
 </div>
 
 <div class='formbuttons'>
-<input type='submit' name='filter' value='Retrieve this tree' />
+<input type='submit' name='filter' value='Retrieve this tree'>
 <?php if (!$suppressListing) { ?>
 <a href='#' onclick='return GTD.tree.toggleOptions(false);'>Cancel and return to live options</a>
 <?php } ?>
@@ -283,11 +283,11 @@ include_once 'header.inc.php';
 
 <div class='formrow'>
 <label class='left first' for='showdone'>Completed items</label>
-<input type='checkbox' id='showdone' onclick='return GTD.tree.showDone(this);' />
+<input type='checkbox' id='showdone' onclick='return GTD.tree.showDone(this);'>
 
 <?php if ($gottypes['a']) { ?>
 <label class='left' for='shownext'>Only <b>next</b> actions</label>
-<input type='checkbox' id='shownext' onclick='return GTD.tree.showNext(this);' />
+<input type='checkbox' id='shownext' onclick='return GTD.tree.showNext(this);'>
 <?php } ?>
 
 <label class='left' for='categoryselect'>Category</label>
@@ -304,7 +304,7 @@ include_once 'header.inc.php';
 if ($gottypes['p']) { ?>
 <label class='left' for='showsomeday'>Someday</label>
 <input type='checkbox' id='showsomeday' onclick='return GTD.tree.showSomeday(this);'<?php
-  if ($showSomedays) echo " checked='checked' "; ?>/>
+  if ($showSomedays) echo " checked='checked' "; ?>>
 <?php }
 
 foreach (array('L','C') as $type) if ($gottypes[$type])

@@ -209,6 +209,10 @@ function trimTaggedString($inStr,$inLength=0,$keepTags=TRUE, $doBR=TRUE) { // En
         ,'/^<ul>/i'=>'</ul>'
         ,'/^<ol>/i'=>'</ol>'
         ,'/^<li>/i'=>'</li>'
+        ,'/^<p>/i'=>'</p>'
+        ,'/^<sup>/i'=>'</sup>'
+        ,'/^<sub>/i'=>'</sub>'
+        ,'/^<br>/i'=>''
         );
     $ellipsis='&hellip;';
     $ampStrings='/^&[#a-zA-Z0-9]+;/';
@@ -240,11 +244,13 @@ function trimTaggedString($inStr,$inLength=0,$keepTags=TRUE, $doBR=TRUE) { // En
                 foreach ($permittedTags as $thisTag=>$thisClosingTag) {
                     if ( preg_match($thisTag,$totest,$matches)===1 ) {
                         $thisChar+=strlen($matches[0]);
-                        $stillHere=FALSE;
-                        if ($keepTags) {
-                            array_push($tagsOpen,$thisClosingTag);
-                            $outStr.=$matches[0];
-                            $tagToClose=$thisClosingTag;
+                        if (!empty($thisClosingTag)) {
+                          $stillHere=FALSE;
+                          if ($keepTags) {
+                              array_push($tagsOpen,$thisClosingTag);
+                              $outStr.=$matches[0];
+                              $tagToClose=$thisClosingTag;
+                          }
                         }
                         break;
                     } // end of if preg_match
