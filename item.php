@@ -454,6 +454,7 @@ if ($show['header']) {
                     if (this.status == 200) {
                       // Note: .response instead of .responseText
                       console.log(this.responseText);
+                      insert_image(this.responseText);
                     }
                   };
                   request.send(formData);

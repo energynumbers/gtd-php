@@ -1,5 +1,4 @@
 <?php
-var_dump($_FILES);
 $upload = $_FILES['userfile'];
 // Crucial: Forbid code files
 $file_extension = pathinfo( $upload['name'], PATHINFO_EXTENSION );
