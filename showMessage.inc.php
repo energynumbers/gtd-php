@@ -4,7 +4,7 @@ if (!empty($_SESSION['message'])) {
         include_once 'gtdfuncs.inc.php';
         echo "<div class='success'>\n";
         foreach ($_SESSION['message'] as $msg)
-            echo stripslashes(escapeChars($msg)),"<br />\n";
+            echo stripslashes(escapeChars($msg)),"<br>\n";
         echo "</div>";
     }
     $_SESSION['message']=array();

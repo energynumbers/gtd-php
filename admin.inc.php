@@ -56,7 +56,7 @@ function showDeleteWarning($noPrint=false) {
             if (_ALLOWUPGRADEINPLACE) $outStr.=' and ';
         }
         if (_ALLOWUPGRADEINPLACE) $outStr.=' over-writing ';
-        $outStr.=" cannot be undone.<br /> \n"
+        $outStr.=" cannot be undone.<br> \n"
             ." Make sure that any information you are about to remove is backed up "
             ." somewhere, and that you are sure it belongs to GTD-PHP and to you.</p>\n";
     } else $outStr='';

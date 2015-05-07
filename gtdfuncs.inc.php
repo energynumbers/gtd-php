@@ -244,13 +244,13 @@ function trimTaggedString($inStr,$inLength=0,$keepTags=TRUE, $doBR=TRUE) { // En
                 foreach ($permittedTags as $thisTag=>$thisClosingTag) {
                     if ( preg_match($thisTag,$totest,$matches)===1 ) {
                         $thisChar+=strlen($matches[0]);
-                        if (!empty($thisClosingTag)) {
-                          $stillHere=FALSE;
-                          if ($keepTags) {
+                        $stillHere=FALSE;
+                        if ($keepTags) {
+                            $outStr.=$matches[0];
+                            if (!empty($thisClosingTag)) {
                               array_push($tagsOpen,$thisClosingTag);
-                              $outStr.=$matches[0];
                               $tagToClose=$thisClosingTag;
-                          }
+                            }
                         }
                         break;
                     } // end of if preg_match
@@ -684,7 +684,7 @@ You can switch <tt>register_globals</tt> off globally in php.ini, if you are
 confident that this will not intefere with any of the other PHP applications on
 this server.  Or you can switch it off locally in the gtd-php installation
 directory by adding the following line to the <tt>.htaccess</tt> file in this
-directory:<br />
+directory:<br>
 <tt>php_flag register_globals off</tt>
 </p>
 RGWARN;

@@ -724,13 +724,13 @@ if ($sep!=='<p>') echo "</p>\n";
                 <input type='text' id='tags' name='tags' size='60' value=<?php
                     echo "'{$values['tagname']}'";
                     if (empty($taglist)) { 
-                        ?> /><br />
+                        ?> /><br>
                         You have no tags yet. You can create some, separated with commas, in the box above.
                         <?php
                     } else { 
                     ?> /> (use commas to separate)
                     <a href='#' onclick='return GTD.tagShow(this);'>Show all</a>
-                    <br />
+                    <br>
                     <span id='taglist'>
                         <?php
                         $sep='';
@@ -1054,7 +1054,7 @@ if ($show['scriptparents']) {
             <label for="searcherneedle">Search for</label>
             <input type='text' name='searcherneedle' id='searcherneedle' onkeyup='return GTD.parentselect.refinesearch(this);' />
             in the titles of
-        <br /><?php
+        <br><?php
             foreach ($allowedSearchTypes as $key=>$value)
                 echo "&nbsp;&nbsp;<label for='radio$key'>$value</label>\n"
                     ,"<input type='radio' name='qtype' class='notfirst' value='$key' id='radio$key' "

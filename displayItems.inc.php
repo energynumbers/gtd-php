@@ -101,7 +101,7 @@ foreach ($maintable as $row) {
                         echo "$brk<a href='itemReport.php?itemId=$pid' title='View report'>"
                             ,makeclean($pnames[$pkey])
                             ,"</a> ";
-                        $brk="<br />\n";
+                        $brk="<br>\n";
                     }
                 }
                 break;

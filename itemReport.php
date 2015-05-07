@@ -312,7 +312,7 @@ if(isset($previousId))
         .makeclean($previoustitle)."'> &lt; </a>";
 
 $titlefull.= " <a href='item.php?itemId={$values['itemId']}'>"
-        ." <img src='themes/{$_SESSION['theme']}/edit.gif' alt='Edit ' title='Edit' /> "
+        ." <img src='themes/{$_SESSION['theme']}/edit.gif' alt='Edit ' title='Edit'> "
         ."</a> ";
 
 if(isset($nextId))
@@ -342,11 +342,11 @@ if ($item['type']==='i')
 //Item details
 if ($item['description']) 
     echo "<tr class='col-fulldes'><th>Description:</th><td>"
-        ,nl2br(escapeChars($item['description'])),"</td></tr>\n";
+        ,escapeChars($item['description']),"</td></tr>\n";
 
 if ($item['desiredOutcome']) 
     echo "<tr class='col-fulloutcome'><th>Desired Outcome:</th><td>"
-        ,nl2br(escapeChars($item['desiredOutcome'])),"</td></tr>\n";
+        ,escapeChars($item['desiredOutcome']),"</td></tr>\n";
 
 if (!empty($pids)) {
     echo "<tr class='col-parents'><th>Parents:&nbsp;</th><td>";
