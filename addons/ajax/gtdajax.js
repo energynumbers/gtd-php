@@ -193,8 +193,7 @@ function Live_field(source,inputtype,savefunc,resetfunc,expandfunc) {
             }
             this.field.cols = Math.max(30, setWidth(width)); // then dividing available width by em width
             this.field.rows = Math.max(2,
-              Math.round(1.001 + (height - that.baseHeight) / that.lineHeight +
-                         ($.browser.mozilla ? 0 : 1)));
+              Math.round(1.001 + (height - that.baseHeight) / that.lineHeight));
             
             txt=old.html();
             $(this.field).text(txt.replace(/<br *\/*>/gi,''));//dummy closure for PSPad: */
@@ -1008,16 +1007,6 @@ function movemultiselect() {
     checkbox=table.find('th.col-checkbox');
     container=$('#multicontainer');
 
-    if ($.browser.safari) {
-      /* Hack needed for safari, because it fails to resize the checkbox column.
-       * This hack forces the column to be too wide, temporarily; it can then
-       * find the real width of the select box, and size the column to fit that.
-       */
-        $('th:has(#multiaction)').
-                width(150).
-                width($('#multiaction').width()+2);
-    }
-
     if (!checkbox.length || checkbox.is(":hidden")) {
         container.hide();
     } else {
@@ -1449,22 +1438,17 @@ GTD.ajax.multisetup=function() {
                 addClass('ajaxeye').          // add the eye icon to it
                 click(showcolumnselector).    // add the click-handler to it
                 attr({title:'Temporarily show/hide/reorder columns'});
-    if ($.browser.msie && $.browser.version < 7) {
-      $("#multicontainer").remove();
-    }
-    else {
-      $("table:has(.col-title)").before(      // put the container of the category/context SELECT boxes just above the table
-        $("#multicontainer").removeClass("hidden")). // and display the container (though SELECT boxes will remain hidden for now)
-        find("thead th.col-checkbox").        // find the table-header cell for the checkbox column
-            empty().                          // remove its current contents
-            addClass('nosort').               // don't sort by this column
-            prepend(                          // put our action SELECT box into the header cell
-                $('#multiaction').
-                    change(multichange).      // add click handler to the SELECT box
-                    change()                  // ensure that the right category/context SELECT is displayed from the start
-            );
-      movemultiselect();
-    }
+    $("table:has(.col-title)").before(      // put the container of the category/context SELECT boxes just above the table
+      $("#multicontainer").removeClass("hidden")). // and display the container (though SELECT boxes will remain hidden for now)
+      find("thead th.col-checkbox").        // find the table-header cell for the checkbox column
+          empty().                          // remove its current contents
+          addClass('nosort').               // don't sort by this column
+          prepend(                          // put our action SELECT box into the header cell
+              $('#multiaction').
+                  change(multichange).      // add click handler to the SELECT box
+                  change()                  // ensure that the right category/context SELECT is displayed from the start
+          );
+    movemultiselect();
     return true;
 };
 // ======================================================================================

@@ -210,9 +210,12 @@ function trimTaggedString($inStr,$inLength=0,$keepTags=TRUE, $doBR=TRUE) { // En
         ,'/^<ol>/i'=>'</ol>'
         ,'/^<li>/i'=>'</li>'
         ,'/^<p>/i'=>'</p>'
+        
         ,'/^<sup>/i'=>'</sup>'
         ,'/^<sub>/i'=>'</sub>'
+        ,'/^<iframe [^>]*>/i'=>'</iframe>'
         ,'/^<br>/i'=>''
+        ,'/^<img [^>]*>/i'=>''
         );
     $ellipsis='&hellip;';
     $ampStrings='/^&[#a-zA-Z0-9]+;/';

@@ -16,8 +16,7 @@ $.fn.animateShow = function jquery_animateShow(aCallback) {
  * It works by extending jQuery, so that we can execute the function on any jQuery object
  */
   var that = this,
-      disp = (!$.browser.msie && this.get(0).tagName.toLowerCase() === "tr") ?
-              "table-row" : "block";
+      disp = "table-row";
               
   this.css({ opacity: 0.01, display: disp }).
        removeClass("togglehidden hidden").

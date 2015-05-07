@@ -42,13 +42,6 @@ switch ($page) {
         $onready.="GTD.ajax.initcontext();";
         break;
         //-------------------------------------------------------------
-    case 'index':
-        if($loadingajax)
-            $headertext.="\n<link rel='commands' href='".
-                htmlentities($addon['urlprefix']).
-                "ubiquity.inc.php' />\n";
-        break;
-        //-------------------------------------------------------------
     default:
         // if none of the above, then there is no ajax
         $loadingajax=false;

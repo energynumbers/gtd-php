@@ -50,6 +50,7 @@ $headertext=<<<HTML1
 <link rel="stylesheet" href="themes/{$_SESSION['theme']}/style_screen.css" media="screen">
 <link rel="shortcut icon" href="./favicon.ico">
 <script src='jquery.js'></script>
+<script src='jquery-migrate.js'></script>
 <script src="calendar.js"></script>
 <script src="lang/calendar-en.js"></script>
 <script src="gtdfuncs.js"></script>
