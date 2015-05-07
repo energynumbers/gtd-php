@@ -216,6 +216,7 @@ function trimTaggedString($inStr,$inLength=0,$keepTags=TRUE, $doBR=TRUE) { // En
         ,'/^<iframe [^>]*>/i'=>'</iframe>'
         ,'/^<br>/i'=>''
         ,'/^<img [^>]*>/i'=>''
+        ,'/^<video [^>]*>/i'=>''
         );
     $ellipsis='&hellip;';
     $ampStrings='/^&[#a-zA-Z0-9]+;/';

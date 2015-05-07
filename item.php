@@ -287,19 +287,19 @@ if ($show['header']) {
             $(element).wysiwyg({
                 classes: 'some-more-classes',
                 // 'selection'|'top'|'top-selection'|'bottom'|'bottom-selection'
-                toolbar: 'top-selection',
+                toolbar: 'top',
                 buttons: {
                     insertimage: {
                         title: 'Insert image',
                         image: '\uf030', 
                         //showstatic: true,    // wanted on the toolbar
-                        showselection: index == 2 ? true : false    // wanted on selection
+                        showselection: true    // wanted on selection
                     },
                     insertvideo: {
                         title: 'Insert video',
                         image: '\uf03d',
                         //showstatic: true,    // wanted on the toolbar
-                        showselection: index == 2 ? true : false    // wanted on selection
+                        showselection: true    // wanted on selection
                     },
                     insertlink: {
                         title: 'Insert link',
@@ -438,18 +438,19 @@ if ($show['header']) {
                   image: '\uf00c'
                 },
                 // Other properties
+                hijackContextmenu: false,
                 selectImage: 'Click or drop image',
                 placeholderUrl: 'http://www.example.com/',
                 placeholderEmbed: '<embed/>',
                 maxImageSize: [600,200],
                 onImageUpload: function( insert_image ) {
                   // TODO
-                  debugger;
                   var formData = new FormData(), request = new XMLHttpRequest();
-                  formData.append('userfile', insert_image);
+                  console.log('in onImageUpload');
+                  formData.append('userfile', this.files[0]);
                   request.open('POST', 'uploadFile.php');
                   request.onload = function(e) {
-                    debugger;
+                    console.log('in request.onload');;
                     if (this.status == 200) {
                       // Note: .response instead of .responseText
                       console.log(this.responseText);
@@ -457,7 +458,7 @@ if ($show['header']) {
                   };
                   request.send(formData);
                 },
-                forceImageUpload: false,    // upload images even if File-API is present
+                forceImageUpload: true,    // upload images even if File-API is present
                 videoFromUrl: function( url ) {
                     // Contributions are welcome :-)
 
