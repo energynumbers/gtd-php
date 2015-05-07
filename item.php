@@ -433,12 +433,17 @@ if ($show['header']) {
                         image: '\uf12d' 
                     }
                 },
+                submit: {
+                  title: 'Submit',
+                  image: '\uf00c'
+                },
                 // Other properties
                 selectImage: 'Click or drop image',
                 placeholderUrl: 'http://www.example.com/',
                 placeholderEmbed: '<embed/>',
                 maxImageSize: [600,200],
                 onImageUpload: function( insert_image ) {
+                  // TODO
                   // A bit tricky, because we can't easily upload a file via
                   // '$.ajax()' on a legacy browser without XMLHttpRequest2.
                   // You have to submit the form into an '<iframe/>' element.
