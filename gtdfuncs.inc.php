@@ -199,24 +199,38 @@ function makeclean($textIn,$stripSlashes=false) {
     return $cleaned;
 }
 //-------------------------------------------------
-function trimTaggedString($inStr,$inLength=0,$keepTags=TRUE, $doBR=TRUE) { // Ensure the visible part of a string, excluding html tags, is no longer than specified)     // TOFIX -  we don't handle "%XX" strings yet.
+function trimTaggedString($inStr,$inLength=0,$keepTags=TRUE, $doBR=TRUE) {
+    // Ensure the visible part of a string, excluding html tags, is no longer than specified)
+    // TOFIX -  we don't handle "%XX" strings yet.
     // constants - might move permittedTags to config file
     $permittedTags=array(
-         '/^<a ((href)|(file))=[^>]+>/i'=>'</a>'
-        ,'/^<b>/i'=>'</b>'
+         
+         // simple tags
+         
+         '/^<b>/i'=>'</b>'
         ,'/^<i>/i'=>'</i>'
-        ,'/^<span [^>]*>/i'=>'</span>'
         ,'/^<ul>/i'=>'</ul>'
         ,'/^<ol>/i'=>'</ol>'
         ,'/^<li>/i'=>'</li>'
         ,'/^<p>/i'=>'</p>'
-        
         ,'/^<sup>/i'=>'</sup>'
         ,'/^<sub>/i'=>'</sub>'
+        ,'/^<blockquote>/i'=>'</blockquote>'
+        
+        // trickier tags
+        
+        ,'/^<a ((href)|(file))=[^>]+>/i'=>'</a>'
+        ,'/^<span [^>]*>/i'=>'</span>'
+        ,'/^<font [^>]*>/i'=>'</font>'
+        ,'/^<div align="(center|right|left|justify)">/i'=>'</div>'
         ,'/^<iframe [^>]*>/i'=>'</iframe>'
+        
+        // tags that self-close
+        
         ,'/^<br>/i'=>''
         ,'/^<img [^>]*>/i'=>''
         ,'/^<video [^>]*>/i'=>''
+        
         );
     $ellipsis='&hellip;';
     $ampStrings='/^&[#a-zA-Z0-9]+;/';
