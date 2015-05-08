@@ -289,148 +289,83 @@ if ($show['header']) {
                 // 'selection'|'top'|'top-selection'|'bottom'|'bottom-selection'
                 toolbar: 'top',
                 buttons: {
+                    removeformat: {
+                        title: 'Remove format',
+                        image: '\uf12d',
+                        showstatic: true
+                    },
+                    subscript: {
+                        title: 'Subscript',
+                        image: '\uf12c', 
+                        showstatic: true
+                    },
+                    superscript: {
+                        title: 'Superscript',
+                        image: '\uf12b', 
+                        showstatic: true
+                    },
                     insertimage: {
                         title: 'Insert image',
                         image: '\uf030', 
-                        //showstatic: true,    // wanted on the toolbar
-                        showselection: true    // wanted on selection
-                    },
-                    insertvideo: {
-                        title: 'Insert video',
-                        image: '\uf03d',
-                        //showstatic: true,    // wanted on the toolbar
-                        showselection: true    // wanted on selection
+                        showstatic: true
                     },
                     insertlink: {
                         title: 'Insert link',
-                        image: '\uf08e'
-                    },
-                    // Header plugin
-                    header: index != 1 ? false : {
-                        title: 'Header',
-                        image: '\uf1dc', 
-                        popup: function( $popup, $button ) {
-                                var list_headers = {
-                                        // Name : Font
-                                        'Header 1' : '<h1>',
-                                        'Header 2' : '<h2>',
-                                        'Header 3' : '<h3>',
-                                        'Header 4' : '<h4>',
-                                        'Header 5' : '<h5>',
-                                        'Header 6' : '<h6>',
-                                        'Code'     : '<pre>'
-                                    };
-                                var $list = $('<div/>').addClass('wysiwyg-plugin-list')
-                                                       .attr('unselectable','on');
-                                $.each( list_headers, function( name, format ) {
-                                    var $link = $('<a/>').attr('href','#')
-                                                         .css( 'font-family', format )
-                                                         .html( name )
-                                                         .click(function(event) {
-                                                            $(element).wysiwyg('shell').format(format).closePopup();
-                                                            // prevent link-href-#
-                                                            event.stopPropagation();
-                                                            event.preventDefault();
-                                                            return false;
-                                                        });
-                                    $list.append( $link );
-                                });
-                                $popup.append( $list );
-                               }
-                        //showstatic: true,    // wanted on the toolbar
-                        //showselection: false    // wanted on selection
+                        image: '\uf08e',
+                        showstatic: true
                     },
                     bold: {
                         title: 'Bold (Ctrl+B)',
                         image: '\uf032', 
-                        hotkey: 'b'
+                        hotkey: 'b',
+                        showstatic: true
                     },
                     italic: {
                         title: 'Italic (Ctrl+I)',
                         image: '\uf033', 
-                        hotkey: 'i'
+                        hotkey: 'i',
+                        showstatic: true
                     },
                     underline: {
                         title: 'Underline (Ctrl+U)',
                         image: '\uf0cd', 
-                        hotkey: 'u'
+                        hotkey: 'u',
+                        showstatic: true
                     },
-                    strikethrough: {
-                        title: 'Strikethrough (Ctrl+S)',
-                        image: '\uf0cc', 
-                        hotkey: 's'
+                    orderedList: {
+                        title: 'Ordered list',
+                        image: '\uf0cb', 
+                        showstatic: true
+                    },
+                    unorderedList: {
+                        title: 'Unordered list',
+                        image: '\uf0ca', 
+                        showstatic: true
                     },
                     forecolor: {
                         title: 'Text color',
-                        image: '\uf1fc' 
+                        image: '\uf1fc',
+                        showstatic: true
                     },
                     highlight: {
                         title: 'Background color',
-                        image: '\uf043' 
+                        image: '\uf043',
+                        showstatic: true
                     },
-                    alignleft: index != 0 ? false : {
-                        title: 'Left',
-                        image: '\uf036', 
-                        //showstatic: true,    // wanted on the toolbar
-                        showselection: false    // wanted on selection
-                    },
-                    aligncenter: index != 0 ? false : {
-                        title: 'Center',
-                        image: '\uf037', 
-                        //showstatic: true,    // wanted on the toolbar
-                        showselection: false    // wanted on selection
-                    },
-                    alignright: index != 0 ? false : {
-                        title: 'Right',
-                        image: '\uf038', 
-                        //showstatic: true,    // wanted on the toolbar
-                        showselection: false    // wanted on selection
-                    },
-                    alignjustify: index != 0 ? false : {
-                        title: 'Justify',
-                        image: '\uf039', 
-                        //showstatic: true,    // wanted on the toolbar
-                        showselection: false    // wanted on selection
-                    },
-                    subscript: index == 1 ? false : {
-                        title: 'Subscript',
-                        image: '\uf12c', 
-                        //showstatic: true,    // wanted on the toolbar
-                        showselection: true    // wanted on selection
-                    },
-                    superscript: index == 1 ? false : {
-                        title: 'Superscript',
-                        image: '\uf12b', 
-                        //showstatic: true,    // wanted on the toolbar
-                        showselection: true    // wanted on selection
-                    },
-                    indent: index != 0 ? false : {
+                    indent: {
                         title: 'Indent',
                         image: '\uf03c', 
-                        //showstatic: true,    // wanted on the toolbar
-                        showselection: false    // wanted on selection
+                        showstatic: true
                     },
-                    outdent: index != 0 ? false : {
+                    outdent: {
                         title: 'Outdent',
                         image: '\uf03b', 
-                        //showstatic: true,    // wanted on the toolbar
-                        showselection: false    // wanted on selection
+                        showstatic: true
                     },
-                    orderedList: index != 0 ? false : {
-                        title: 'Ordered list',
-                        image: '\uf0cb', 
-                        //showstatic: true,    // wanted on the toolbar
-                        showselection: false    // wanted on selection
-                    },
-                    unorderedList: index != 0 ? false : {
-                        title: 'Unordered list',
-                        image: '\uf0ca', 
-                        //showstatic: true,    // wanted on the toolbar
-                        showselection: false    // wanted on selection
-                    },
-                    removeformat: {
-                        title: 'Remove format',
-                        image: '\uf12d' 
+                    insertvideo: {
+                        title: 'Insert video',
+                        image: '\uf03d',
+                        showstatic: true
                     }
                 },
                 submit: {
