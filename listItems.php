@@ -112,10 +112,10 @@ gtd_handleEvent(_GTD_ON_DATA,$pagename);
 if (isset($endmsg['header'])) echo "<h4>{$endmsg['header']}</h4>\n";
 if (isset($endmsg['link'])) echo "<a href='{$endmsg['link']}'>{$endmsg['prompt']}</a>\n";
 ?>
-<script type='text/javascript'>/* <![CDATA[ */
+<script>
 $(document).ready(function() {
     GTD.filtertoggle();
     <?php if ($quickfind) echo "GTD.focusOnForm('needle');\n"; ?>
 });
-/* ]]> */ </script>
+</script>
 <?php include_once 'footer.inc.php'; ?>

@@ -24,12 +24,10 @@ if (empty($title)) $title= ($_SESSION['config']['title_suffix']) ? $pagename : '
 $extrajavascript = '';
 
 if ($_SESSION['debug']['debug'] || defined('_DEBUG'))
-	$extrajavascript .= "\n<script 
-    /* <![CDATA[ */
+	$extrajavascript .= "\n<script> 
     $(document).ready(function(){
         GTD.debugInit(\"{$_SESSION['debug']['key']}\");
     });
-    /* ]]> */
     </script>";
 
 $themejs="themes/{$_SESSION['theme']}/theme.js";

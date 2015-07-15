@@ -260,8 +260,7 @@ if ($show['header']) {
     // end of wysiwg.js
     
     ?>
-    <script type="text/javascript">
-    /* <![CDATA[ */
+    <script>
     $(document).ready(function() {
       GTD.initItem(document);
       <?php if ($show['scriptparents']) { ?>
@@ -435,7 +434,6 @@ if ($show['header']) {
         // end of wysiwg.js
       <?php } ?>
     });
-    /* ]]> */
     </script>
     <?php
     }

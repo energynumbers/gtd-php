@@ -54,13 +54,11 @@ if ($loadingajax) {
 <link rel='stylesheet' href='{$addon['dir']}ajax.css'>
 <script src='{$addon['dir']}gtdajax.js'></script>
 <script>
-/* <![CDATA[ */
 $(document).ready(function() {
     GTD.ajax.urlprefix='{$addon['urlprefix']}';
     GTD.ajax.dir='{$addon['dir']}';
     $onready
 });
-/* ]]> */
 </script>
 HTML;
 }

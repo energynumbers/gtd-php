@@ -573,8 +573,8 @@ function nextPage() { // set up the forwarding to the next page
             break;
     }
     log_value('referrer',$updateGlobals['referrer']);
-    //TOFIX $nextUrl can be an array here sometimes, e.g. when marking an inbox item complete from AJAX
-    if (strpos($nextURL,'nextId=0')!==false) {
+    // $nextUrl can be an array here sometimes, e.g. when marking an inbox item complete from AJAX
+    if (is_string($nextURL) && strpos($nextURL,'nextId=0')!==false) {
         if (empty($_REQUEST['referrer']) || strpos($_REQUEST['referrer'],'nextId=0')) {
             $_SESSION[$key]=$tst;
             $nextURL='';

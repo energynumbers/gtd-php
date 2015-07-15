@@ -57,10 +57,8 @@ $menu='';
 require_once 'headerHtml.inc.php';
 if ($_SESSION['useLiveEnhancements']) {
     ?>
-    <script type='text/javascript'>
-        /* <![CDATA[ */
+    <script>
         $(document).ready(GTD.setTabs);
-        /* ]]> */
     </script>
     <?php
 }

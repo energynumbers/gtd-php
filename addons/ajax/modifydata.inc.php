@@ -50,12 +50,10 @@ foreach ($Amaintable['n'] as $key=>$maintable) {
     $sep=',';
 }
 ?>
-<script type='text/javascript'>
-/* <![CDATA[ */
+<script>
 $(document).ready(function(){
     GTD.ajax.setNoChildren({
     <?php echo $onready; ?>
     });
 });
-/* ]]> */
 </script>

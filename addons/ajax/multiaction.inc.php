@@ -41,13 +41,11 @@ global $taglist,$cashtml,$cshtml,$tshtml,$filter;
     </select>
     </span>
 </div>
-<script type='text/javascript'>
-/* <![CDATA[ */
+<script>
 GTD.ajax.filter={<?php
     echo "everything:"
         ,($filter['everything']=='true')?'true':'false'
         ,",tickler:"
         ,($filter['tickler']=='true')?'true':'false';
 ?>};
-/* ]]> */
 </script>
