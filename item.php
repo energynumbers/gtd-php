@@ -191,7 +191,7 @@ $recur=$defaults;
 if (empty($values['recur'])) {
     $values['recur']=$values['recurdesc']=null;
 } else {
-    require_once 'iCalcreator.class.inc.php';
+    require_once 'iCalcreator/iCalcreator.php';
     $e = new vevent();
     $e->parse(array('RRULE:'.$values['recur']));
     $rrule=$e->getProperty('rrule');

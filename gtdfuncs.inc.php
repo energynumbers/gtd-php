@@ -916,7 +916,7 @@ function query($querylabel,$values=NULL,$sort=NULL) {
    ======================================================================================
 */
 function processRecurrence($values) {
-    require_once 'iCalcreator.class.inc.php';
+    require_once 'iCalcreator/iCalcreator.php';
     $vevent = new vevent();
     $rrule=array();
     $rrule['INTERVAL']= (empty($_REQUEST['INTERVAL'])) ? 1 : $_REQUEST['INTERVAL'];
@@ -1007,7 +1007,7 @@ function getNextRecurrence($values,$vevent=NULL) {
  *  get the next date of a recurring item
  *  returns false if failed, else returns timestamp of next recurrence
  */
-    require_once 'iCalcreator.class.inc.php';
+    require_once 'iCalcreator/iCalcreator.php';
     if (!$vevent) {
         log_text("creating vcal event to get recurrence date");
         $vevent = new vevent();
