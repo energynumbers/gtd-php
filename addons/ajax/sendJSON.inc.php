@@ -4,9 +4,6 @@ if (!headers_sent()) header('Content-Type: application/json; charset=utf-8');
 
 require_once 'headerDB.inc.php';
 
-require_once 'JSONlib.inc.php';
-$json = new Services_JSON();    // create a new instance of Services_JSON
-
 $values = array();
 $action=$_REQUEST['action'];
 $output=array('result'=>false); // default result
@@ -88,6 +85,6 @@ switch ($action) {
 }
 $output['log']=ob_get_contents();
 ob_end_clean();
-echo $json->encode($output);
+echo json_encode($output);
 exit;
 ?>

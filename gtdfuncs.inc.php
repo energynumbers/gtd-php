@@ -1054,11 +1054,7 @@ function getNextRecurrence($values,$vevent=NULL) {
        "until="=>$saveUntil
        ));
 
-    $vevent->_recur2date($recurlist,$rrule,
-        $start,    // start date of item
-        $start,    // start date of interval we're interested in
-        $end       // end date
-    );
+    iCalUtilityFunctions::_recur2date( $recurlist, $rrule, $start, $start, $end );
     log_value('recurrence date back from iCalCreator=',$recurlist);
 
     if (empty($recurlist)) {
@@ -1068,7 +1064,8 @@ function getNextRecurrence($values,$vevent=NULL) {
         $nextdue=key($recurlist); // get first key in returned array - that's the date
         // if we had an UNTIL date, compare our returned date
         // if it's later, then there are no more recurrences
-        $nextdue= ($saveUntil && $saveUntil < $nextdue) ? false : date('Y-m-d',$nextdue);
+        log_value('pre-processed due date',$nextdue);
+        $nextdue= ($saveUntil && $saveUntil < $nextdue) ? false : (substr($nextdue,0,4) . '-' . substr($nextdue,4,2) . '-' . substr($nextdue,6,2));
     }
     log_value('next due date',$nextdue);
     return $nextdue;
