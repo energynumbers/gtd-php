@@ -5,14 +5,14 @@ GTD-PHP
 What
 ----
  
-Version 0.10.0 (2014-12-05 20:12Z)
+Version 0.9.1 (2015-07-15 09:49Z)
 A web-based implementation of the Getting Things Done system for personal
 organization.
 
 Requirements
 ------------
 
-* PHP 5.4.0-5.6.x
+* PHP 5.4.0 - 7.0.x
 * MySQL 5.x
 * Web server such as Apache or Nginx
 

@@ -121,6 +121,10 @@ $versions=array(
                            'database'=>'0.8z.09',
                         'upgradepath'=>'copy')
 
+    ,'0.9.00'=> array(      'tables'=>'0.8z.07',
+                           'database'=>'0.8z.09',
+                        'upgradepath'=>'copy')
+
     );
 /*
   end of global variables
@@ -561,6 +565,13 @@ installation for use and familiarize yourself with the system.</p>\n
 	 case '0.8z.08': // ugprade from 0.8z.08
         copyToNewPrefix('0.8z.08','0.8z.09',$fromPrefix,$toPrefix);
         up08z08TO08z09($fromPrefix,$toPrefix);
+
+		// deliberately flows through to next case
+		//---------------------------------------------------
+    
+	 case '0.8z.09': // ugprade from 0.8z.09
+        copyToNewPrefix('0.8z.09','0.9.00',$fromPrefix,$toPrefix);
+        up08z00TO09($fromPrefix,$toPrefix);
 
 		//---------------------------------------------------
         // end of chained upgrade process
