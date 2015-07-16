@@ -70,6 +70,11 @@ if ($updateGlobals['multi']) {
     doAction($action);
 }
 
+if ($updateGlobals['captureOutput']) {
+  endCapture();
+  exit;
+}
+
 nextPage();
 if ($html)
     echo "</body></html>";
@@ -573,8 +578,8 @@ function nextPage() { // set up the forwarding to the next page
             break;
     }
     log_value('referrer',$updateGlobals['referrer']);
-    // $nextUrl can be an array here sometimes, e.g. when marking an inbox item complete from AJAX
-    if (is_string($nextURL) && strpos($nextURL,'nextId=0')!==false) {
+
+    if (strpos($nextURL,'nextId=0')!==false) {
         if (empty($_REQUEST['referrer']) || strpos($_REQUEST['referrer'],'nextId=0')) {
             $_SESSION[$key]=$tst;
             $nextURL='';
@@ -589,102 +594,107 @@ function nextPage() { // set up the forwarding to the next page
     else 
         $nextURL=html_entity_decode($nextURL);
     
-    if ($updateGlobals['captureOutput']) {
-        if ($values['itemId']) {
-            $result=query('selectlastmodified',$values);
-            if ($result) $values['lastModified']=$result[0]['lastModified'];
-        }
-        $outtext=$_SESSION['message'];
-        $_SESSION['message']=array();
-        $logtext=ob_get_contents();
-        ob_end_clean();
-        if (!headers_sent()) {
-            $header="Content-Type: text/xml; charset=".$_SESSION['config']['charset'];
-            header($header);
-        }
-        // NB don't put line breaks (\n) into the XML - it breaks things!
-        echo '<?xml version="1.0" ?',"><gtdphp>"; // encoding="{$_SESSION['config']['charset']}"
-        echo "<values>",
-             "<action>$action</action>";
-        foreach ($values as $key=>$val) {
-            switch ($key) {
-                //------------------------------------------------
-                case 'categoryId':       // deliberately flows through
-                case 'contextId':        // deliberately flows through
-                case 'isSomeday':        // deliberately flows through
-                case 'itemId':           // deliberately flows through
-                case 'newitemId':        // deliberately flows through
-                case 'nextaction':       // deliberately flows through
-                case 'oldid':            // deliberately flows through
-                case 'oldtype':          // deliberately flows through
-                case 'parentid':         // deliberately flows through
-                case 'timeframeId':      // deliberately flows through
-                case 'type':
-                    echo "<$key>",makeclean($val),"</$key>";
-                    break;
-                //-------------------------------------------------------
-                case 'childfilterquery': // deliberately flows through
-                case 'filterquery':      // deliberately flows through
-                case 'parentfilterquery':// deliberately flows through
-                case 'parents':
-                    // suppress reporting these values
-                    break;
-                //-------------------------------------------------------
-                case 'tickledate':
-                  if (!empty($val) && $val!=='NULL')
-                    echo '<unixtickledate>'
-                        ,strtotime(str_replace("'",'',$val))
-                        ,'</unixtickledate>';
-                     // deliberately flows through
-                case 'dateCompleted':    // deliberately flows through
-                case 'dateCreated':      // deliberately flows through 
-                case 'deadline':         // deliberately flows through
-                case 'oldDateCompleted': 
-                    echo "<$key>"
-                        ,($val==='NULL' || empty($val)) ? '' :
-                            ('<![CDATA['
-                            .date($_SESSION['config']['datemask'],
-                                strtotime(str_replace("'",'',$val)))
-                            .']]>')
-                        ,"</$key>";
-                    break;
-                //-------------------------------------------------------
-                case 'description':      // deliberately flows through
-                case 'desiredOutcome':   
-                    $val=nl2br($val);    // deliberately flows through
-                default:                 // by default, we wrap things in CDATA for safety
-                    echo "<$key>"
-                        ,("$val"==="") ? '' : "<![CDATA[$val]]>"
-                        ,"</$key>";
-                    break;
-                case 'lastModified':
-                    if ($val) echo "<$key><![CDATA["
-                            ,date($_SESSION['config']['datemask'].' H:i:s',$val)
-                            ,"]]></$key>";
-                    break;
-                //-------------------------------------------------------
-                case 'tagname':
-                case 'alltags':
-                    echo "<$key><![CDATA[";
-                    if (array_key_exists('alltags',$values)) {
-                        echo implode(',',$values['alltags']);
-                    } else if (is_array($values['tagname']))
-                        echo implode(',',$values['tagname']);
-                    else echo $values['tagname'];
-                    echo "]]></$key>";
-                    break;
-                //-------------------------------------------------------
-            }
-            echo "";
-        }
-        echo "</values><result>";
-        if (!empty($outtext)) foreach ($outtext as $line) echo "<line><![CDATA[$line]]></line>";
-        echo "</result>"
-            ,"<log><![CDATA[$logtext]]></log>"
-            ,"</gtdphp>";
-        exit;
-    } else nextScreen($nextURL);
+    nextScreen($nextURL);
 }
+
+function endCapture() {
+  global $values,$action;
+    if ($values['itemId']) {
+        $result=query('selectlastmodified',$values);
+        if ($result) $values['lastModified']=$result[0]['lastModified'];
+    }
+    $outtext=$_SESSION['message'];
+    $_SESSION['message']=array();
+    $logtext=ob_get_contents();
+    ob_end_clean();
+    if (!headers_sent()) {
+        $header="Content-Type: text/xml; charset=".$_SESSION['config']['charset'];
+        header($header);
+    }
+    // NB don't put line breaks (\n) into the XML - it breaks things!
+    // TODO work out why I used xml rather than json here
+    echo '<?xml version="1.0" ?',"><gtdphp>"; // encoding="{$_SESSION['config']['charset']}"
+    echo "<values>",
+         "<action>$action</action>";
+    foreach ($values as $key=>$val) {
+        switch ($key) {
+            //------------------------------------------------
+            case 'categoryId':       // deliberately flows through
+            case 'contextId':        // deliberately flows through
+            case 'isSomeday':        // deliberately flows through
+            case 'itemId':           // deliberately flows through
+            case 'newitemId':        // deliberately flows through
+            case 'nextaction':       // deliberately flows through
+            case 'oldid':            // deliberately flows through
+            case 'oldtype':          // deliberately flows through
+            case 'parentid':         // deliberately flows through
+            case 'timeframeId':      // deliberately flows through
+            case 'type':
+                echo "<$key>",makeclean($val),"</$key>";
+                break;
+            //-------------------------------------------------------
+            case 'childfilterquery': // deliberately flows through
+            case 'filterquery':      // deliberately flows through
+            case 'parentfilterquery':// deliberately flows through
+            case 'parents':
+                // suppress reporting these values
+                break;
+            //-------------------------------------------------------
+            case 'tickledate':
+              if (!empty($val) && $val!=='NULL')
+                echo '<unixtickledate>'
+                    ,strtotime(str_replace("'",'',$val))
+                    ,'</unixtickledate>';
+                 // deliberately flows through
+            case 'dateCompleted':    // deliberately flows through
+            case 'dateCreated':      // deliberately flows through 
+            case 'deadline':         // deliberately flows through
+            case 'oldDateCompleted': 
+                echo "<$key>"
+                    ,($val==='NULL' || empty($val)) ? '' :
+                        ('<![CDATA['
+                        .date($_SESSION['config']['datemask'],
+                            strtotime(str_replace("'",'',$val)))
+                        .']]>')
+                    ,"</$key>";
+                break;
+            //-------------------------------------------------------
+            case 'description':      // deliberately flows through
+            case 'desiredOutcome':   
+                $val=nl2br($val);    // deliberately flows through
+            default:                 // by default, we wrap things in CDATA for safety
+                echo "<$key>"
+                    ,("$val"==="") ? '' : "<![CDATA[$val]]>"
+                    ,"</$key>";
+                break;
+            case 'lastModified':
+                if ($val) echo "<$key><![CDATA["
+                        ,date($_SESSION['config']['datemask'].' H:i:s',$val)
+                        ,"]]></$key>";
+                break;
+            //-------------------------------------------------------
+            case 'tagname':
+            case 'alltags':
+                echo "<$key><![CDATA[";
+                if (array_key_exists('alltags',$values)) {
+                    echo implode(',',$values['alltags']);
+                } else if (is_array($values['tagname']))
+                    echo implode(',',$values['tagname']);
+                else echo $values['tagname'];
+                echo "]]></$key>";
+                break;
+            //-------------------------------------------------------
+        }
+        echo "";
+    }
+    echo "</values><result>";
+    if (!empty($outtext)) foreach ($outtext as $line) echo "<line><![CDATA[$line]]></line>";
+    echo "</result>"
+        ,"<log><![CDATA[$logtext]]></log>"
+        ,"</gtdphp>";
+}
+
+  
 //===========================================================================
 
 // php closing tag has been omitted deliberately, to avoid unwanted blank lines being sent to the browser
