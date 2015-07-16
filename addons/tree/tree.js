@@ -213,7 +213,7 @@ GTD.tree = {
 
       // count number of items that would be deleted, and highlight block to be deleted
       allDescendants = saveclicked.addClass("activated").find("li").
-                                   andSelf();
+                                   addBack();
       countdesc = allDescendants.length - 1;
 
       // get confirmation from the user

@@ -125,7 +125,7 @@ function Live_field(source,inputtype,savefunc,resetfunc,expandfunc) {
                 //--------------------------------------------------
                 case 'text':
                     // find the element that originally contained the title
-                    old.children().andSelf().               // look at the table cell and all its children
+                    old.children().addBack().               // look at the table cell and all its children
                         filter(function() {
                             return ($(this).text() !== ""); // remove elements that have no text content
                         }).
@@ -256,7 +256,7 @@ function updateItem(row, xmldata) {
               insertAfter(row).
                 removeClass('inajax onajaxcall').
                 find(':checkbox').
-                    attr('disabled',true).
+                    prop('disabled',true).
                     unbind().
                     end().
                 find('.col-lastModified').
@@ -288,7 +288,7 @@ function updateItem(row, xmldata) {
     }
 
     row.find('[name="isMarked[]"]:checkbox').
-        attr('checked',done);
+        prop('checked',done);
 
     fields=['deadline','dateCompleted','tickledate','dateCreated','lastModified'];
     max=fields.length;
@@ -318,7 +318,7 @@ function updateItem(row, xmldata) {
     if (done && $('input[name=ptype]').val()!=='C') {
         row.find(':checkbox').
             unbind().
-            attr('disabled',true);
+            prop('disabled',true);
     }
     row.removeClass('inajax onajaxcall').
         animateShow(hide2);
@@ -480,7 +480,7 @@ function ItemEditor(row) {
         mydata = form.serialize() + "&output=xml&fromjavascript=true";
 
         // freeze the form to prevent any edits while we're out on AJAX
-        $('*',newdiv).unbind().attr('disabled',true);
+        $('*',newdiv).unbind().prop('disabled',true);
 
         // send form to processItems.php in AJAX call
         $.ajax({
@@ -517,7 +517,7 @@ function ItemEditor(row) {
                 }
 
                 for (i=0;i<checkfields.length;i++) {
-                    $('[name="'+checkfields[i]+'"]:checkbox',row).attr('checked',$(checkfields[i],results).text()==='y');
+                    $('[name="'+checkfields[i]+'"]:checkbox',row).prop('checked',$(checkfields[i],results).text()==='y');
                 }
                 // grab the text for each category name from the select boxes in the form
                 fields=['context','category','timeframe'];
@@ -528,7 +528,7 @@ function ItemEditor(row) {
                         thisfld.text(thisSelect.get(0).options[thisSelect.get(0).selectedIndex].text);
                     }
                 }
-                $('[name="isNAs[]"]:checkbox',row).attr('checked',$('nextaction',results).text()==='y');
+                $('[name="isNAs[]"]:checkbox',row).prop('checked',$('nextaction',results).text()==='y');
                 $('#debuglog').empty().append($('gtdphp log',xmldata).text());
                 GTD.freeze(false);
                 that.tidyUp();
@@ -774,14 +774,14 @@ function addAjaxToggleContext(node,context) {
  * context: the unique ID of the context being toggled by this checkbox
  */
     var editbox=$("<input type='checkbox' />").
-        attr('checked',true);
+        prop('checked',true);
     if ($(node).parents('tbody').length) { // in the table body
         editbox.
             css('cursor','pointer').
             bind('change',{context:context},toggleContext);
     }
     if (jQuery.inArray(context, hiddencontexts) !== -1) {
-        editbox.attr('checked',false);
+        editbox.prop('checked',false);
         $("div"+context).slideToggle("fast");
     }
     editbox.prependTo(node);
@@ -1128,7 +1128,7 @@ function colselectorclicked(e) {
  * e: jQuery event
  */
     var target=$(e.target);
-    if (!target.parents().andSelf().filter('#colselector').length) {
+    if (!target.parents().addBack().filter('#colselector').length) {
         // clicked outside the box, so remove it
         colselectorclose();
         return true;
@@ -1141,7 +1141,7 @@ function colselectorclicked(e) {
         toggleClass('colhidden').
         toggleClass('colshown');
         
-    if ($('#colpreview').attr('checked')) {
+    if ($('#colpreview').prop('checked')) {
         reordercolumns();
     }
 
@@ -1156,7 +1156,7 @@ function movecolumn(e,ui) {
  * ui: jQuery UI info for the originating item of this event
  */
     // update the display, if preview is on
-    if ($('#colpreview').attr('checked')) {reordercolumns();}
+    if ($('#colpreview').prop('checked')) {reordercolumns();}
 }
 // -------------------------------------------------------------------------
 function columnpreviewtoggle(e) {
@@ -1165,7 +1165,7 @@ function columnpreviewtoggle(e) {
  *
  * e: jQuery event
  */
-    if ($('#colpreview').attr('checked')) {reordercolumns();}
+    if ($('#colpreview').prop('checked')) {reordercolumns();}
     e.stopPropagation();
     return true;     // and allow checkbox to be ticked
 }
@@ -1260,7 +1260,8 @@ function showcolumnselector(e) {
                 attr({id:'colpreviewspan'}).
                 append(
                     $("<input type='checkbox' />").             // the SPAN contains a CHECKBOX
-                        attr({id:'colpreview',name:'colpreview',checked:true})
+                        attr({id:'colpreview',name:'colpreview'}).
+                        prop('checked',true)
                 ).
                 append(
                     $(document.createElement('label')).         // and the SPAN also contains a LABEL
@@ -1356,7 +1357,7 @@ GTD.ajax.initReport = function ajaxInitReport() {
             $('#debuglog').
                 empty().
                 append($('gtdphp log',xmldata).text());     // dump debug data if present
-            $("td.col-checkbox :checkbox").attr({ checked: false }).animateShow();
+            $("td.col-checkbox :checkbox").prop('checked', false).animateShow();
         },
         type: "POST",
         url: "processItems.php"});
