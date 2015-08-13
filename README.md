@@ -7,7 +7,7 @@ What
  
 Version 0.9.1 (2015-07-15 09:49Z)
 A web-based implementation of the Getting Things Done system for personal
-organization.
+organization. Not quite as dead as you thought.
 
 Requirements
 ------------
