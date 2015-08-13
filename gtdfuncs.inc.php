@@ -209,6 +209,7 @@ function trimTaggedString($inStr,$inLength=0,$keepTags=TRUE, $doBR=TRUE) {
          
          '/^<b>/i'=>'</b>'
         ,'/^<i>/i'=>'</i>'
+        ,'/^<em>/i'=>'</em>'
         ,'/^<ul>/i'=>'</ul>'
         ,'/^<ol>/i'=>'</ol>'
         ,'/^<li>/i'=>'</li>'
