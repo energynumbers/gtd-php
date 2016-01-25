@@ -173,7 +173,7 @@ function escapeforjavascript($txt) {
 }
 //-------------------------------------------------
 function escapeChars($str) {
-    foreach (array('&'=>'&amp;','&amp;hellip;'=>'&hellip;','&amp;gt;'=>'&gt;','&amp;lt;'=>'&lt;') as $from=>$to)
+    foreach (array('&'=>'&amp;','&amp;hellip;'=>'&hellip;','&amp;gt;'=>'&gt;','&amp;lt;'=>'&lt;','&amp;amp;'=>'&amp;') as $from=>$to)
         $str=str_replace($from,$to,$str);
     return $str;
 }
@@ -184,16 +184,16 @@ function makeclean($textIn,$stripSlashes=false) {
         foreach ($textIn as $line) $cleaned[]=makeclean($line);
     } else {
 		  if ($stripSlashes) $textIn = stripslashes($textIn);
-		  if ( version_compare( PHP_VERSION,'5.2.3',  '>=' ) ) {
+		  //if ( version_compare( PHP_VERSION,'5.2.3',  '>=' ) ) {
 			 // htmlentities doubleEncode (4th param) needs PHP 5.2.3 or higher
-        $cleaned=htmlentities( $textIn, ENT_QUOTES,
-													$_SESSION['config']['charset'], FALSE ); 
-			} else {
+        //$cleaned=htmlentities( $textIn, ENT_QUOTES,
+				//									$_SESSION['config']['charset'], FALSE ); 
+			//} else {
         $cleaned=htmlentities(
 					html_entity_decode($textIn, ENT_QUOTES,$_SESSION['config']['charset']),
 					ENT_QUOTES,
 					$_SESSION['config']['charset'] ); 
-		  }
+		  //}
 		}
 		
     return $cleaned;

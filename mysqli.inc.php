@@ -27,7 +27,8 @@ function getDBVersion() {
 function getDBtables($db) {
 	global $connection;
     $tablelist=array();
-    $tables=mysqli_list_tables($connection, $db);
+
+  $tables = mysqli_query($connection,"SHOW TABLES");
 	while ($tbl = mysqli_fetch_row($tables))
 	   array_push($tablelist,$tbl[0]);
     return $tablelist;
